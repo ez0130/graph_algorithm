@@ -1,0 +1,43 @@
+#Kahn's algorithm
+#Topological sort: DAG (directed Acyclic Graph) , In-Degree
+#사용 사례: data pipeline airflow /dagster, software build (Make/Gradle) 
+
+from collections import deque
+
+def topological_sort(v_count, adj_list, indegree):
+    result = []
+    queue = deque()
+
+    # 1. 진입차수가 0인 노드를 큐에 삽입
+    for i in range(1, v_count + 1):
+        if indegree[i] == 0:
+            queue.append(i)
+
+    while queue:
+        u = queue.popleft()
+        result.append(u)
+
+        # 2. 해당 노드와 연결된 노드들의 진입차수에서 1을 뺌
+        for v in adj_list[u]:
+            indegree[v] -= 1
+            # 3. 새롭게 진입차수가 0이 된 노드를 큐에 삽입
+            if indegree[v] == 0:
+                queue.append(v)
+
+    # 모든 노드를 방문하지 못했다면 사이클이 존재한다는 뜻
+    if len(result) != v_count:
+        return "Cycle detected!"
+    return result
+
+# 예시: 1->2, 1->3, 2->4, 3->4, 4->5
+v, e = 5, 5
+adj = [[] for _ in range(v + 1)]
+indegree = [0] * (v + 1)
+
+# 간선 정보 및 진입차수 계산
+edges = [(1, 2), (1, 3), (2, 4), (3, 4), (4, 5)]
+for u, v in edges:
+    adj[u].append(v)
+    indegree[v] += 1
+
+print(f"위상 정렬 결과: {topological_sort(v, adj, indegree)}")
