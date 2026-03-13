@@ -37,3 +37,9 @@ graph = [
 
 # 1번 노드부터 탐색 시작
 bfs(graph, 1)
+
+
+
+
+#deque.popleft() 가 list.pop(0) 보다 나은 이유, 리스트는 빈자리를 채우기 위해 N 개의 요소를 모두 이동, deques
+dubouly linked list 로 O(1) 으로 삽입 정렬 가능. 
