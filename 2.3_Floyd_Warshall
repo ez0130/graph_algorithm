@@ -1,0 +1,28 @@
+#모든 정점에서 모든 정점'으로의 최단 거리를 한번에 구하는 알고리즘. 그래프 전체의 거리 지도를 완성하는게 목적.
+#DP (다이나믹 프로그래밍 사용)  d[i][j] = min([d[i][j], d[i][k]+d[k][j])
+
+
+def floyd_warshall(graph, v_count):
+    # 1. 거리 테이블 초기화 (2차원 배열)
+    dist = [[float('inf')] * (v_count + 1) for _ in range(v_count + 1)]
+    
+    for i in range(1, v_count + 1):
+        dist[i][i] = 0  # 자기 자신은 0
+        
+    for u, v, w in graph:
+        dist[u][v] = w  # 기존 간선 정보 입력
+
+    # 2. 3중 반복문 (k: 경유지, i: 출발지, j: 도착지)
+    for k in range(1, v_count + 1):
+        for i in range(1, v_count + 1):
+            for j in range(1, v_count + 1):
+                if dist[i][j] > dist[i][k] + dist[k][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+                    
+    return dist
+
+# (출발, 도착, 가중치)
+edges = [(1, 2, 4), (1, 4, 6), (2, 1, 3), (2, 3, 7), (3, 1, 5), (3, 4, 4), (4, 3, 2)]
+v_count = 4
+
+result = floyd_warshall(edges, v_count)
