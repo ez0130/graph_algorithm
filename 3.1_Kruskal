@@ -1,0 +1,46 @@
+#MST : Minimum Spanning Tree) 
+# edge 를 중심으로 생각, 모든 엣지를 가중치 오름차순으로 정렬 후 낮은 엣지부터 트리에 추가
+# 이때 사이클이 형성되는 엣지는  버림(Union-find자료구조를 사용해서 확인) 간선이 적은 그래프에 유리
+
+
+
+# 특정 원소가 속한 집합의 루트를 찾는 함수 (Find)
+def find_parent(parent, x):
+    if parent[x] != x:
+        parent[x] = find_parent(parent, parent[x])
+    return parent[x]
+
+# 두 집합을 합치는 함수 (Union)
+def union_parent(parent, a, b):
+    a = find_parent(parent, a)
+    b = find_parent(parent, b)
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
+
+def kruskal(v_count, edges):
+    parent = [i for i in range(v_count + 1)] # 부모 테이블 초기화
+    edges.sort(key=lambda x: x[2])           # 1. 간선을 가중치 순으로 정렬
+    
+    mst_edges = []
+    total_cost = 0
+
+    for u, v, cost in edges:
+        # 2. 사이클이 발생하지 않는 경우에만 집합에 포함
+        if find_parent(parent, u) != find_parent(parent, v):
+            union_parent(parent, u, v)
+            mst_edges.append((u, v))
+            total_cost += cost
+            
+    return mst_edges, total_cost
+
+# (노드A, 노드B, 비용)
+graph_edges = [
+    (1, 2, 29), (1, 5, 75), (2, 3, 35), (2, 6, 34),
+    (3, 4, 7), (4, 6, 23), (4, 7, 13), (5, 6, 53), (6, 7, 25)
+]
+
+edges, cost = kruskal(7, graph_edges)
+print(f"MST 연결 간선: {edges}")
+print(f"최소 비용: {cost}")
