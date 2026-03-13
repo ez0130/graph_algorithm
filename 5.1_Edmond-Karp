@@ -7,7 +7,7 @@ from collections import deque
 
 def edmonds_karp(graph, source, sink, v_count):
     # 1. 잔여 용량(Capacity) 행렬 초기화
-    # 인접 행렬 방식으로 용량을 관리하면 업데이트가 직관적이야
+    # 인접 행렬 방식으로 용량을 관리
     capacity = [[0] * (v_count + 1) for _ in range(v_count + 1)]
     for u, v, cap in graph:
         capacity[u][v] = cap
