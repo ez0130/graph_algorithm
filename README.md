@@ -10,4 +10,6 @@
 3. MST
   Kruskal
   Prim
-4. Network Flow & Topology
+4. Topological Sort
+  Kahn's 
+5. Network Flow & Topology
